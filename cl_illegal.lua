@@ -130,32 +130,38 @@ RegisterNetEvent("cad-illegal:startwork", function()
 end)
 
 CreateThread(function()
-	Wait(100)
-	exports['qb-target']:AddTargetModel('s_m_m_linecook', {
-        options = {
-            {                
-				event = "cad-illegal:startwork",
-				icon = "fas fa-truck-loading", 
-				label = "Sign In", 
-				canInteract = function()
-					if not isDeliveryActive and #(Config.StartLocation - GetEntityCoords(PlayerPedId())) < 4 then return true end
-					return false
-				end,
-            },
-			{                				
-				icon = "fas fa-truck-loading", 
-				label = "Sign Out", 
-				canInteract = function()
-					if isDeliveryActive and #(Config.StartLocation - GetEntityCoords(PlayerPedId())) < 4 then return true end
-					return false
-				end,
-				action = function()					
-					EndDelivery()					
-				end,
-            },
-        },
-        distance =  1.5
-    })
-	
+	exports['qb-target']:SpawnPed({
+		model = 's_m_m_linecook',
+		coords = vector4(180.23, -1637.97, 29.29, 217.56), 
+		minusOne = true,
+		freeze = true, 
+		invincible = true,
+		blockevents = true, 
+		target = {
+			options = { 
+				{                
+					event = "cad-illegal:startwork",
+					icon = "fas fa-truck-loading", 
+					label = "Sign In", 
+					canInteract = function()
+						if not isDeliveryActive and #(Config.StartLocation - GetEntityCoords(PlayerPedId())) < 4 then return true end
+						return false
+					end,
+				},
+				{                				
+					icon = "fas fa-truck-loading", 
+					label = "Sign Out", 
+					canInteract = function()
+						if isDeliveryActive and #(Config.StartLocation - GetEntityCoords(PlayerPedId())) < 4 then return true end
+						return false
+					end,
+					action = function()					
+						EndDelivery()					
+					end,
+				},
+			},
+		distance = 2.5, 
+		},
+		spawnNow = true,		
+	})  
 end)
-
